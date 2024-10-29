@@ -617,19 +617,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nosotras .content {
-  padding: 20px; /* Reducir el padding para hacer el cuadro menos alto */
+  padding: 20px; 
   background-color: white;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 850px; /* Aumentar el max-width para hacerlo más ancho */
-  text-align: justify; /* Asegura que el texto esté alineado a la izquierda */
-}
-
-.nosotras .section-paragraph {
-  font-size: 16px;
-  line-height: 1.5; /* Reducir el line-height para que el texto ocupe menos altura */
-  text-align: justify;
-  color: #050505;
+  max-width: 850px; 
+  text-align: justify; 
 }
 
 .nosotras h2 {
@@ -641,36 +634,48 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nosotras .nosotras-img {
-  max-width: 300px; /* Controla el tamaño de la imagen */
-  height: 300px; /* Mantén la imagen proporcional con altura y ancho iguales */
+  max-width: 300px; 
+  height: 300px; 
   padding: 0px;
   display: block;
-  border-radius: 50%; /* Hace la imagen circular */
-  object-fit: cover; /* Ajusta la imagen para que se recorte dentro del círculo */
-  margin-left: 20px; /* Añade espacio entre el texto y la imagen */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Sombra alrededor de la imagen */
+  border-radius: 50%; 
+  object-fit: cover; 
+  margin-left: 20px; 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); 
 }
 
-.nosotras .row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+/* Media Query para Pantallas Móviles */
+@media (max-width: 768px) {
+  .nosotras .container {
+    flex-direction: column; /* Cambiar a dirección vertical */
+    align-items: center; /* Centrar los elementos */
+  }
 
-.nosotras .col-lg-6 {
-  flex: 1;
-  padding: 20px 20px;
-}
+  .nosotras .col-lg-6 {
+    max-width: 100%; /* Permitir que las columnas ocupen todo el ancho */
+    text-align: center; /* Centrar texto */
+  }
 
-.nosotras .col-lg-6:first-child {
-  max-width: 40%; 
-}
+  .nosotras .content {
+    padding: 15px; /* Reducir el padding en móviles */
+    max-width: 90%; /* Ajustar el ancho */
+  }
 
-.nosotras .col-lg-6:last-child {
-  max-width: 60%; 
-  text-align: right; 
-}
+  .nosotras .nosotras-img {
+    max-width: 80%; /* Permitir que la imagen sea más grande */
+    height: auto; /* Mantener proporción */
+    margin-left: 0; /* Eliminar margen izquierdo */
+    margin-bottom: 20px; /* Añadir margen inferior para separación */
+  }
 
+  .nosotras h2 {
+    font-size: 24px; /* Reducir tamaño de fuente en móviles */
+  }
+
+  .nosotras .section-paragraph {
+    font-size: 14px; /* Reducir tamaño de texto */
+  }
+}
 
 /*--------------------------------------------------------------
 # Footer
