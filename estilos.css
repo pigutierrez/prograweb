@@ -521,49 +521,54 @@ section,
 --------------------------------------------------------------*/
 .inicio {
   width: 100%;
-  min-height: 50vh; /* Ajusta la altura mínima según sea necesario */
+  min-height: 50vh;
   display: flex;
-  flex-direction: column; /* Cambia a columna para alinear título e imagen */
-  align-items: center; /* Alinea verticalmente al centro */
-  justify-content: center; /* Alinea horizontalmente al centro */
-  padding: 30px 0; /* Espacio arriba y abajo */
-  margin-bottom: 0; /* Asegúrate de que no haya margen inferior */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 0;
+  margin-bottom: 30px;
 }
 
 .inicio h1 {
   margin: 0;
-  font-size: 45px; /* Ajusta el tamaño de la fuente según sea necesario */
+  font-size: 45px;
   font-weight: 600;
-  color: var(--heading-color); /* Color del texto */
+  color: var(--heading-color);
 }
 
 .inicio .inicio-img {
-  display: flex; /* Usar flex para centrar la imagen */
-  justify-content: center; /* Centra la imagen horizontalmente */
-  align-items: center; /* Centra la imagen verticalmente */
-  margin-top: 20px; /* Espacio entre el texto y la imagen */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .inicio img {
-  max-width: 100%; /* Asegura que la imagen no exceda el ancho del contenedor */
-  height: auto; /* Mantiene la proporción de la imagen */
+  max-width: 100%;
+  height: auto;
 }
 
 @media (max-width: 768px) {
   .inicio h1 {
-    font-size: 28px; /* Ajusta el tamaño del encabezado en dispositivos más pequeños */
+    font-size: 28px;
+  }
+
+  .inicio {
+    margin-bottom: 60px;
   }
 }
 
 /*--------------------------------------------------------------
 # Carrusel
 --------------------------------------------------------------*/
-.swiper, .gallery {
-  margin-top: 0; 
+.swiper {
+  margin-top: 0px;
 }
 
 .gallery {
   overflow: hidden;
+  margin-top: 0;
 }
 
 .gallery .swiper-wrapper {
@@ -585,6 +590,7 @@ section,
 
 .gallery .swiper-pagination .swiper-pagination-bullet-active {
   background-color: var(--accent-color);
+  opacity: 1;
 }
 
 .gallery .swiper-slide-active {
@@ -592,71 +598,21 @@ section,
 }
 
 @media (min-width: 992px) {
-  .gallery .swiper-wrapper {
-    padding: 40px 0;
-  }
-
-  .gallery .swiper-slide-active {
-    background: var(--background-color);
-    border: 6px solid var(--accent-color);
-    padding: 4px;
-    z-index: 1;
-    transform: scale(1.2);
-    transition: none;
+  .swiper {
+    margin-top: 10px;
   }
 }
 
+.gallery .swiper-wrapper {
+  padding: 40px 0;
+}
 
-@media (max-width: 768px) {
-
-  .gallery {
-    padding: 0 10px; /* Espaciado lateral más pequeño */
-  }
-
- 
-  .gallery .swiper-wrapper {
-    display: flex;
-    flex-direction: row; 
-    padding: 20px 0;
-  }
-
-  
-  .gallery .swiper-slide {
-    width: 70% !important; 
-    height: auto; 
-    margin: 0 auto; 
-  }
-
-  .gallery .swiper-slide-active {
-    transform: scale(1) !important; 
-    padding: 0; 
-  }
-
-  .gallery .swiper-slide img {
-    width: 100% !important; 
-    height: auto; 
-    object-fit: cover; 
-    max-height: 200px;
-  }
-
-  .gallery .swiper-pagination {
-    bottom: 10px; 
-    left: 0;
-    right: 0;
-    text-align: center;
-  }
-
-  .gallery .swiper-pagination .swiper-pagination-bullet {
-    width: 8px; 
-    height: 8px;
-    margin: 0 4px; 
-  }
-
-  .gallery .swiper-pagination .swiper-pagination-bullet-active {
-    background-color: var(--accent-color);
-    width: 10px; 
-    height: 10px;
-  }
+.gallery .swiper-slide-active {
+  background: var(--background-color);
+  padding: 4px;
+  z-index: 1;
+  transform: scale(1.2);
+  transition: none;
 }
 
 /*--------------------------------------------------------------
