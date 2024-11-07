@@ -1,106 +1,113 @@
-(function() {
+(function () {
   "use strict";
 
-  // Función para manejar el estado de desplazamiento
+  // Función para manejar el estilo del header al hacer scroll
   function handleScrollState() {
-    const bodyElement = document.querySelector('body');
-    const headerElement = document.querySelector('#header');
+    const headerElement = document.querySelector('.header');
+    const logoImg = document.querySelector('.logo-img');
+    const logoText = document.querySelector('.logo-text');
 
-    // Verificamos si el encabezado tiene una de las clases relevantes
-    if (!(headerElement.classList.contains('scroll-up-sticky') || 
-          headerElement.classList.contains('sticky-top') || 
-          headerElement.classList.contains('fixed-top'))) return;
+    if (!headerElement || !logoImg || !logoText) return;
 
-    // Agregar o quitar clase 'scrolled' según la posición del scroll
-    bodyElement.classList.toggle('scrolled', window.scrollY > 100);
+    if (window.scrollY > 250) {
+      headerElement.classList.add('scrolled');
+      logoImg.style.display = 'none';
+      logoText.style.display = 'block';
+    } else {
+      headerElement.classList.remove('scrolled');
+      logoImg.style.display = 'block';
+      logoText.style.display = 'none';
+    }
   }
 
-  // Eventos para el desplazamiento y carga de ventana
+  // Ejecuta la función al hacer scroll y al cargar la página
   document.addEventListener('scroll', handleScrollState);
   window.addEventListener('load', handleScrollState);
 
-  // Manejo del menú de navegación móvil
+  // Menú de navegación móvil
   const mobileNavButton = document.querySelector('.mobile-nav-toggle');
+  const navMenu = document.querySelector('.navmenu');
 
-  function toggleMobileNav() {
-    document.body.classList.toggle('mobile-nav-active');
-    mobileNavButton.classList.toggle('bi-list');
-    mobileNavButton.classList.toggle('bi-x');
-  }
+  // Función para alternar el menú y el icono de la hamburguesa
+  if (mobileNavButton) {
+    function toggleMobileNav() {
+      document.body.classList.toggle('mobile-nav-active');
+      mobileNavButton.classList.toggle('bi-list');
+      mobileNavButton.classList.toggle('bi-x');
+      navMenu.classList.toggle('active'); // Alternar la visibilidad del menú
+    }
 
-  // Evento para el botón del menú móvil
-  mobileNavButton.addEventListener('click', toggleMobileNav);
+    mobileNavButton.addEventListener('click', toggleMobileNav);
 
-  // Cerrar el menú móvil al hacer clic en enlaces internos
-  document.querySelectorAll('#navmenu a').forEach(link => {
-    link.addEventListener('click', () => {
-      if (document.body.classList.contains('mobile-nav-active')) {
-        toggleMobileNav();
-      }
+    // Cambiar el selector para que coincida con el HTML
+    document.querySelectorAll('.navmenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (document.body.classList.contains('mobile-nav-active')) {
+          toggleMobileNav();
+        }
+      });
     });
-  });
+  }
 
   // Preloader
   const preloaderElement = document.querySelector('#preloader');
   if (preloaderElement) {
-    window.addEventListener('load', () => {
-      preloaderElement.remove();
-    });
+    window.addEventListener('load', () => preloaderElement.remove());
   }
 
   // Botón para volver al inicio
   const scrollTopButton = document.querySelector('.scroll-top');
-
   function handleScrollTopButton() {
     if (scrollTopButton) {
       scrollTopButton.classList.toggle('active', window.scrollY > 100);
     }
   }
 
-  // Evento para el botón de volver al inicio
-  scrollTopButton.addEventListener('click', (event) => {
-    event.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  if (scrollTopButton) {
+    scrollTopButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   window.addEventListener('load', handleScrollTopButton);
   document.addEventListener('scroll', handleScrollTopButton);
 
-  // Inicialización de AOS (Animate On Scroll)
-  function initializeAOS() {
-    AOS.init({
-      duration: 600,
-      easing: 'ease-in-out',
-      once: true,
-      mirror: false
-    });
-  }
+  // AOS
+  window.addEventListener('load', () => AOS.init({ duration: 600, easing: 'ease-in-out', once: true, mirror: false }));
 
-  window.addEventListener('load', initializeAOS);
+  // GLightbox
+  GLightbox({ selector: '.glightbox' });
 
-  // Inicialización de GLightbox
-  const lightbox = GLightbox({ selector: '.glightbox' });
+  // Swiper
+  const swiperConfig = {
+    loop: true,
+    speed: 600,
+    autoplay: { delay: 5000 },
+    slidesPerView: "auto",
+    centeredSlides: true,
+    pagination: {
+      el: ".swiper-pagination",
+      type: "bullets",
+      clickable: true
+    },
+    breakpoints: {
+      320: { slidesPerView: 1, spaceBetween: 0 },
+      768: { slidesPerView: 3, spaceBetween: 20 },
+      1200: { slidesPerView: 5, spaceBetween: 20 }
+    }
+  };
 
-  // Inicialización de PureCounter
-  new PureCounter();
+  new Swiper(".init-swiper", swiperConfig);
 
-  // Función para inicializar Swiper
-  function setupSwipers() {
-    document.querySelectorAll(".init-swiper").forEach(swiperElement => {
-      let config = JSON.parse(swiperElement.querySelector(".swiper-config").innerHTML.trim());
+  // Ajustar posición de desplazamiento para enlaces hash
+  window.addEventListener('load', function () {
+    // Eliminar hash de la URL al cargar la página
+    if (window.location.hash) {
+      history.replaceState("", document.title, window.location.pathname + window.location.search);
+    }
 
-      if (swiperElement.classList.contains("swiper-tab")) {
-        initializeSwiperWithCustomPagination(swiperElement, config);
-      } else {
-        new Swiper(swiperElement, config);
-      }
-    });
-  }
-
-  window.addEventListener("load", setupSwipers);
-
-  // Ajustar la posición de desplazamiento en la carga de la página para enlaces hash
-  window.addEventListener('load', function() {
+    // Si hay un hash en la URL, hacer scroll hasta esa sección, sino, scroll al inicio
     if (window.location.hash) {
       const targetSection = document.querySelector(window.location.hash);
       if (targetSection) {
@@ -112,12 +119,13 @@
           });
         }, 100);
       }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   });
 
   // Scrollspy para el menú de navegación
   const navMenuLinks = document.querySelectorAll('.navmenu a');
-
   function updateNavMenuScrollSpy() {
     navMenuLinks.forEach(link => {
       if (!link.hash) return;
@@ -125,49 +133,36 @@
       if (!section) return;
 
       const currentPosition = window.scrollY + 200;
-      const isActive = currentPosition >= section.offsetTop && currentPosition <= (section.offsetTop + section.offsetHeight);
-
-      link.classList.toggle('active', isActive);
+      link.classList.toggle('active', currentPosition >= section.offsetTop && currentPosition <= (section.offsetTop + section.offsetHeight));
     });
   }
 
   window.addEventListener('load', updateNavMenuScrollSpy);
   document.addEventListener('scroll', updateNavMenuScrollSpy);
 
+  // EmailJS: Configuración y envío del formulario
+  emailjs.init("IHwJhomQrbod07_QA");  // Sustituye USER_ID con tu User ID de EmailJS
+
+  // Función para enviar el formulario
+  document.getElementById('pedidoForm').addEventListener('submit', function(event) {
+    event.preventDefault();  // Evita que se recargue la página
+
+    var formData = {
+      nombre: document.getElementById('nombre').value,
+      email: document.getElementById('email').value,
+      mensaje: document.getElementById('mensaje').value
+    };
+
+    // Enviar el formulario usando EmailJS
+    emailjs.send("service_o1zc1ti", "template_ztdvz9s", formData)  // Sustituye SERVICE_ID y TEMPLATE_ID con los correspondientes de tu configuración
+      .then(function(response) {
+        console.log('Success', response); 
+        alert('¡Gracias! Hemos recibido tu pedido.');
+        document.getElementById('pedidoForm').reset();  
+      }, function(error) {
+        console.log('Failed', error); 
+        alert('Hubo un error al enviar el formulario. Por favor, intenta de nuevo más tarde.');
+      });
+  });
+
 })();
-
-// Captura los elementos del formulario
-const nombreInput = document.getElementById("nombre");
-const emailInput = document.getElementById("email");
-const mensajeInput = document.getElementById("mensaje");
-
-// Recupera datos desde el Local Storage al cargar la página
-document.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("nombre")) nombreInput.value = localStorage.getItem("nombre");
-    if (localStorage.getItem("email")) emailInput.value = localStorage.getItem("email");
-    if (localStorage.getItem("mensaje")) mensajeInput.value = localStorage.getItem("mensaje");
-});
-
-// Guarda los datos en Local Storage cuando el usuario escribe
-nombreInput.addEventListener("input", () => localStorage.setItem("nombre", nombreInput.value));
-emailInput.addEventListener("input", () => localStorage.setItem("email", emailInput.value));
-mensajeInput.addEventListener("input", () => localStorage.setItem("mensaje", mensajeInput.value));
-
-// Envío del formulario y limpieza del Local Storage
-document.getElementById("pedidoForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Evita el envío normal del formulario
-
-    const formData = new FormData(this);
-    
-    fetch("enviar_pedido.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.text())
-    .then(responseText => {
-        alert(responseText); // Muestra la respuesta del servidor
-        localStorage.clear(); // Limpia el Local Storage
-        this.reset(); // Reinicia el formulario
-    })
-    .catch(error => console.error("Error:", error));
-});
